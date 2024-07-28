@@ -285,9 +285,10 @@ async def run_arena(interaction: discord.Interaction, players : dict):
     token = rewards["rewardName"]
     topPlayers = []
 
+    runningPlayersString = '\n'.join([player.mention for player in running_players])
     await interaction.followup.send(embed=discord.Embed(
         title="ARENA IS STARTING!!",
-        description=f"Running players :  \n {'\n'.join([player.mention for player in running_players])}!"
+        description=f"Running players :  \n {runningPlayersString}!"
     ))
     
     while len(running_players) > 1:
