@@ -137,7 +137,7 @@ async def change_user_balance(interaction: discord.Interaction):
     if response != -1:
         
         await interaction.response.send_message(embed=create_embed(
-            title=f"{"Added" if amount > 0 else "Detracted"} to {user.name} balance" , 
+            title=f"{'Added' if amount > 0 else 'Detracted'} to {user.name} balance" , 
             description=f"{user.mention} balance have been changed : {amount} ${token}\nNew balance is : {response} ${token}", 
             color=discord.Colour.green() if amount > 0 else discord.Colour.red()
             )
@@ -188,8 +188,7 @@ async def arena_start(interaction: discord.Interaction):
 
         #Fetch every user that reacted to the original message
         message = await interaction.channel.fetch_message(message.id)
-        reaction_users : list = [
-        ]
+        reaction_users : list = []
 
         for reaction in message.reactions:
             if reaction.emoji == '⚔️':
@@ -233,13 +232,13 @@ async def get_user_champion(interaction: discord.Interaction):
         nft_data = user_data['default_nft']
         attributes = nft_data["attributes"]
 
-        embed = create_embed(title=f"Champion : {attributes["title"]} ",description=f"{attributes["description"]}")
+        embed = create_embed(title=f"Champion : {attributes['title']} ",description=f"{attributes['description']}")
 
-        embed.add_field(name="STR" , value=f"**{attributes["str"]}**", inline=True)
-        embed.add_field(name="DEX" , value=f"**{attributes["dex"]}**", inline=True)
-        embed.add_field(name="INT" , value=f"**{attributes["int"]}**", inline=True)
+        embed.add_field(name="STR" , value=f"**{attributes['str']}**", inline=True)
+        embed.add_field(name="DEX" , value=f"**{attributes['dex']}**", inline=True)
+        embed.add_field(name="INT" , value=f"**{attributes['int']}**", inline=True)
         embed.add_field(name="-" , value=f"-", inline=True)
-        embed.add_field(name="LUCK" , value=f"**{attributes["luck"]}**", inline=True)
+        embed.add_field(name="LUCK" , value=f"**{attributes['luck']}**", inline=True)
         embed.add_field(name="-" , value=f"-", inline=True)
 
         embed.set_image(url=nft_data["media"].replace("#","%23"))
@@ -257,7 +256,7 @@ async def get_leaderboard(interaction: discord.Interaction):
     if len(leaderboard_raw) == 0:
         interaction.response.send_message(embed=create_embed("NO USERS IN THE LEADERBOARD"))
 
-    embed = create_embed(title="ROYALE LEADERBOARD",description=f"Rankings sorted by {mode.lower().replace("_"," ")}")
+    embed = create_embed(title="ROYALE LEADERBOARD",description=f"Rankings sorted by {mode.lower().replace('_',' ')}")
 
     rank = 1
 
@@ -288,7 +287,7 @@ async def run_arena(interaction: discord.Interaction, players : dict):
 
     await interaction.followup.send(embed=discord.Embed(
         title="ARENA IS STARTING!!",
-        description=f"Running players :  \n {"\n".join([player.mention for player in running_players])}!"
+        description=f"Running players :  \n {'\n'.join([player.mention for player in running_players])}!"
     ))
     
     while len(running_players) > 1:
@@ -332,7 +331,7 @@ async def run_arena(interaction: discord.Interaction, players : dict):
         winner = running_players.pop()
         embed = create_embed(
             title=f"WINNER! {winner.mention}" , 
-            description=f"Congratulations, you are earned **{rewards["rewardDistribution"]["1"]} ${token}**" , 
+            description=f"Congratulations, you are earned **{rewards['rewardDistribution']['1']} ${token}**" , 
             image_url=players[winner]["default_nft"]["media"].replace("#","%23"))
         
         embed.add_field(name="POSITION", value="#######" , inline=True)
@@ -340,9 +339,9 @@ async def run_arena(interaction: discord.Interaction, players : dict):
         embed.add_field(name=f"${token}", value="######" , inline=True)
 
         for player in topPlayers:
-            embed.add_field(name=f"-" , value=f"{player["position"]}" , inline=True)
-            embed.add_field(name=f"-" , value=f"{player["player_data"].mention}" , inline=True)
-            embed.add_field(name=f"-" , value=f"+{rewards["rewardDistribution"][player["position"]]}" , inline=True)
+            embed.add_field(name=f"-" , value=f"{player['position']}" , inline=True)
+            embed.add_field(name=f"-" , value=f"{player['player_data'].mention}" , inline=True)
+            embed.add_field(name=f"-" , value=f"+{rewards['rewardDistribution'][player['position']]}" , inline=True)
         
         embed.set_footer("Made my DrTranzoc | @honorais")
 
