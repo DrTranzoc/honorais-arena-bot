@@ -145,75 +145,6 @@ async def change_user_balance(interaction: discord.Interaction):
     else:
         await interaction.response.send_message(embed=create_embed(description="Couldn't change user balance..." , color=discord.Colour.red()) , ephemeral=True)
 
-@tree_cls.command(name='honorais-arena-start', description="Start an arena. React to participate!")
-async def arena_start(interaction: discord.Interaction):
-
-    try:
-        countdown = interaction.data['options'][0]['value']
-        minplayers = interaction.data['options'][1]['value']
-        role : discord.Role = interaction.data['options'][2]['value'] if len(interaction.data['options']) > 2 else "<@everyone>"
-    except Exception:
-        await interaction.response.send_message(embed=create_embed(description="An error occurred..." , color=discord.Colour.red()) , ephemeral=True)
-
-    if minplayers < 1:
-        await interaction.response.send_message(embed=create_embed(description="Minimum-players **cannot** be lower than **1**" , color=discord.Colour.red()) , ephemeral=True)
-        return
-
-    # Only specific people can use the command
-    authorized = await check_role(interaction, GAME_SETTINGS["adminRoleName"])
-    if not authorized:
-        await interaction.response.send_message(embed=create_embed(description="You are **not** authorized to use this command." , color=discord.Colour.red()) , ephemeral=True)
-        return
-
-    await interaction.response.send_message("<@&" + role + ">" if role != "@everyone" else role, embed=create_embed(
-                                                                        title="HONORAIS ROYALE",
-                                                                        description="# HONORAIS! \n Fight and DIE for **honor!** Your anchestors awaits *you*!\n## REACT WITH ⚔️ TO JOIN!",
-                                                                        color=discord.Colour.dark_green(),
-                                                                        image_url=GAME_SETTINGS["botBanner"],
-                                                                        footer_text="Made my DrTranzoc @honorais\n"
-                                                                    ))
-    message = await interaction.original_response()
-    await message.add_reaction('⚔️')
-
-    valid_users = {}
-    
-    warning = 0
-    for _ in range(0 , countdown, 10):
-
-        await asyncio.sleep(2)
-
-        warning += 10
-        if warning % 30 == 0:
-            await interaction.followup.send(embed=create_embed(description=f"## The bloodbath will starts in {countdown - warning} seconds..." , color=discord.Colour.yellow())) 
-
-        #Fetch every user that reacted to the original message
-        message = await interaction.channel.fetch_message(message.id)
-        reaction_users : list = []
-
-        for reaction in message.reactions:
-            if reaction.emoji == '⚔️':
-                async for user in reaction.users():
-                    if user != client.user:
-                        reaction_users.append(user)
-
-        #Check if user is valid
-        for user in reaction_users:
-            if user not in valid_users:
-                check_outcome = userManager.check_active_roster(user.id, GAME_SETTINGS["collectionAddress"])
-                if check_outcome["outcome"]:
-                    valid_users[user] = check_outcome["user_data"]
-                else:
-                    await message.remove_reaction('⚔️', user)
-                    try:
-                        await user.send("You don't have an NFT in the active roster!\nLink your discord and select your active NFT here : https://www.thehonorais.com/profile")
-                    except discord.Forbidden:
-                        pass
-
-    if len(valid_users.keys()) < minplayers:
-        await interaction.followup.send(embed=create_embed(description="Not enough players to start the arena!" , color=discord.Colour.red()))
-        return
-    
-    await run_arena(interaction, valid_users)
 
 @tree_cls.command(name='honorais-my-champion', description="Retrieve user champion")
 async def get_user_champion(interaction: discord.Interaction):
@@ -277,6 +208,75 @@ async def get_leaderboard(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
+@tree_cls.command(name='honorais-arena-start', description="Start an arena. React to participate!")
+async def arena_start(interaction: discord.Interaction):
+
+    try:
+        countdown = interaction.data['options'][0]['value']
+        minplayers = interaction.data['options'][1]['value']
+        role : discord.Role = interaction.data['options'][2]['value'] if len(interaction.data['options']) > 2 else "<@everyone>"
+    except Exception:
+        await interaction.response.send_message(embed=create_embed(description="An error occurred..." , color=discord.Colour.red()) , ephemeral=True)
+
+    if minplayers < 1:
+        await interaction.response.send_message(embed=create_embed(description="Minimum-players **cannot** be lower than **1**" , color=discord.Colour.red()) , ephemeral=True)
+        return
+
+    # Only specific people can use the command
+    authorized = await check_role(interaction, GAME_SETTINGS["adminRoleName"])
+    if not authorized:
+        await interaction.response.send_message(embed=create_embed(description="You are **not** authorized to use this command." , color=discord.Colour.red()) , ephemeral=True)
+        return
+
+    await interaction.response.send_message("<@&" + role + ">" if role != "@everyone" else role, embed=create_embed(
+                                                                        title="HONORAIS ROYALE",
+                                                                        description="# HONORAIS! \n Fight and DIE for **honor!** Your anchestors awaits *you*!\n## REACT WITH ⚔️ TO JOIN!",
+                                                                        color=discord.Colour.dark_green(),
+                                                                        image_url=GAME_SETTINGS["botBanner"],
+                                                                        footer_text="Made my DrTranzoc @honorais\n"
+                                                                    ))
+    message = await interaction.original_response()
+    await message.add_reaction('⚔️')
+
+    valid_users = {}
+    
+    warning = 0
+    for _ in range(0 , countdown, 10):
+
+        await asyncio.sleep(10)
+
+        warning += 10
+        if warning % 30 == 0:
+            await interaction.followup.send(embed=create_embed(description=f"## The bloodbath will starts in {countdown - warning} seconds..." , color=discord.Colour.yellow())) 
+
+        #Fetch every user that reacted to the original message
+        message = await interaction.channel.fetch_message(message.id)
+        reaction_users : list = []
+
+        for reaction in message.reactions:
+            if reaction.emoji == '⚔️':
+                async for user in reaction.users():
+                    if user != client.user:
+                        reaction_users.append(user)
+
+        #Check if user is valid
+        for user in reaction_users:
+            if user not in valid_users:
+                check_outcome = userManager.check_active_roster(user.id, GAME_SETTINGS["collectionAddress"])
+                if check_outcome["outcome"]:
+                    valid_users[user] = check_outcome["user_data"]
+                else:
+                    await message.remove_reaction('⚔️', user)
+                    try:
+                        await user.send("You don't have an NFT in the active roster!\nLink your discord and select your active NFT here : https://www.thehonorais.com/profile")
+                    except discord.Forbidden:
+                        pass
+
+    if len(valid_users.keys()) < minplayers:
+        await interaction.followup.send(embed=create_embed(description="Not enough players to start the arena!" , color=discord.Colour.red()))
+        return
+    
+    await run_arena(interaction, valid_users)
         
 async def run_arena(interaction: discord.Interaction, players : dict):
     rewards : dict = GAME_SETTINGS["rewards"]
@@ -356,7 +356,11 @@ async def run_arena(interaction: discord.Interaction, players : dict):
         #Reward players with custom token
         for player in topPlayers:
             amount = rewards["rewardDistribution"][player["position"]]
-            userManager.change_balance(amount , player["player_data"].id , token)
+            userManager.update_balance(amount , player["player_data"].id , token)
+            userManager.update_user_wins(player.id)
+        
+        for player in players:
+            userManager.update_user_gamescount(player.id)
 
 if __name__=='__main__':
     #Load game settings

@@ -40,7 +40,7 @@ def get_leaderboard(mode):
         return sorted(users_data, key=lambda x: x["games_data"]["games_played"], reverse=True)
 
 
-def change_balance(discord_id , amount, token_name) -> bool:
+def update_balance(discord_id , amount, token_name) -> bool:
 
     user_data = get_or_create_user_data(discord_id)
     
@@ -59,6 +59,15 @@ def change_balance(discord_id , amount, token_name) -> bool:
         print(e)
         return -1
     
+def update_user_wins(discord_id):
+    user_data = get_or_create_user_data(discord_id)
+    user_data["games_data"]["games_won"] += 1
+    users_table.put_item(Item=user_data)
+
+def update_user_gamescount(discord_id):
+    user_data = get_or_create_user_data(discord_id)
+    user_data["games_data"]["games_played"] += 1
+    users_table.put_item(Item=user_data)
 
 def get_balance(discord_id , token_name) -> int:
     
