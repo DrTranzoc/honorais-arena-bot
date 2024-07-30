@@ -192,10 +192,12 @@ async def get_leaderboard(interaction: discord.Interaction):
     rank = 1
 
     for user_raw in leaderboard_raw:
+        print(user_raw["discord_id"])
         user : discord.Member = interaction.guild.get_member(int(user_raw["discord_id"]))
+        print(user)
 
         embed.add_field(name="rank" , value=rank)
-        embed.add_field(name="user" , value=user.global_name)
+        embed.add_field(name="user" , value=user.global_name if user else "...")
 
         if mode == "HONOR":
             embed.add_field(name="value" , value=user_raw["balances"].get("HONOR", 0))
@@ -320,8 +322,9 @@ async def run_arena(interaction: discord.Interaction, players : dict):
 
         #Battle recap
         survivor_mentions = '\n'.join([player.mention for player in survivors])
-        await interaction.followup.send(embed=create_embed("BATTLE RECAP\n\n" , description=recap +
-                                                           f"\n\n\n**ROUND SURVIVOR** \n{survivor_mentions} \n**{str(len(running_players))}** players remaining!"
+        await interaction.followup.send(embed=create_embed(title="BATTLE RECAP\n\n" , 
+                                                           description=recap + f"\n\n\n**ROUND SURVIVOR** \n{survivor_mentions} \n**{str(len(running_players))}** players remaining!",
+                                                           thumbnail_url=players[survivors[0]]["default_nft"]["media"].replace("#","%23")
                                                            ))
         
         await asyncio.sleep(8)  # Time between rounds

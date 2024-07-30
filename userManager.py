@@ -80,7 +80,6 @@ def get_balance(discord_id , token_name) -> int:
     
     return response['Item']['balances'][token_name] if token_name != "any" else response['Item']['balances']
 
-
 def check_active_roster(discord_id, collection_address):
     check_outcome = {
         "outcome": False,
@@ -104,7 +103,6 @@ def get_user_data(discord_id):
         return user_data
     
     return {}
-
 
 def check_still_owner(discord_id , collection_address , token_id) -> bool:
     #1) Get user data to retrievbe the address
