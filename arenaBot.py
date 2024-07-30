@@ -24,7 +24,7 @@ def create_embed(
         author_name=None, 
         author_url=None, 
         author_icon_url=None, 
-        footer_text="Made my DrTranzoc | @honorais\n", 
+        footer_text="Made by DrTranzoc | @honorais\n", 
         footer_icon_url=None, 
         timestamp=None): 
     
@@ -173,7 +173,7 @@ async def get_user_champion(interaction: discord.Interaction):
         embed.add_field(name="-" , value=f"-", inline=True)
 
         embed.set_image(url=nft_data["media"].replace("#","%23"))
-        embed.set_footer(text="Made my DrTranzoc | @honorais")
+        embed.set_footer(text="Made by DrTranzoc | @honorais")
 
         await interaction.response.send_message(embed=embed)
 
@@ -233,7 +233,7 @@ async def arena_start(interaction: discord.Interaction):
                                                                         description="# HONORAIS! \n Fight and DIE for **honor!** Your anchestors awaits *you*!\n## REACT WITH ⚔️ TO JOIN!",
                                                                         color=discord.Colour.dark_green(),
                                                                         image_url=GAME_SETTINGS["botBanner"],
-                                                                        footer_text="Made my DrTranzoc @honorais\n"
+                                                                        footer_text="Made by DrTranzoc @honorais\n"
                                                                     ))
     message = await interaction.original_response()
     await message.add_reaction('⚔️')
@@ -344,7 +344,7 @@ async def run_arena(interaction: discord.Interaction, players : dict):
             embed.add_field(name=f"-" , value=f"{player['player_data'].mention}" , inline=True)
             embed.add_field(name=f"-" , value=f"+{rewards['rewardDistribution'][player['position']]}" , inline=True)
         
-        embed.set_footer(text="Made my DrTranzoc | @honorais")
+        embed.set_footer(text="Made by DrTranzoc | @honorais")
 
         await interaction.followup.send(embed=embed)
 
@@ -357,7 +357,7 @@ async def run_arena(interaction: discord.Interaction, players : dict):
         for player in topPlayers:
             amount = rewards["rewardDistribution"][player["position"]]
             userManager.update_balance(amount , player["player_data"].id , token)
-            userManager.update_user_wins(player.id)
+            userManager.update_user_wins(player["player_data"].id)
         
         for player in players:
             userManager.update_user_gamescount(player.id)
