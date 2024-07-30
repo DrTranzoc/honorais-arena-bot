@@ -292,7 +292,6 @@ async def run_arena(interaction: discord.Interaction, players : dict):
     ))
     
     while len(running_players) > 1:
-        await asyncio.sleep(5)  # Time between rounds
 
         if len(running_players) < 2:
             break
@@ -324,6 +323,8 @@ async def run_arena(interaction: discord.Interaction, players : dict):
         await interaction.followup.send(embed=create_embed("BATTLE RECAP\n\n" , description=recap +
                                                            f"\n\n\n**ROUND SURVIVOR** \n{survivor_mentions} \n**{str(len(running_players))}** players remaining!"
                                                            ))
+        
+        await asyncio.sleep(8)  # Time between rounds
 
     ### RESULT PHASE
     if len(running_players) == 1:
@@ -331,8 +332,8 @@ async def run_arena(interaction: discord.Interaction, players : dict):
         
         winner = running_players.pop()
         embed = create_embed(
-            title=f"WINNER! {winner.mention}" , 
-            description=f"Congratulations, you are earned **{rewards['rewardDistribution']['1']} ${token}**" , 
+            title=f"WINNER! {winner.global_name}" , 
+            description=f"Congratulations, {winner.mention}, you are earned **{rewards['rewardDistribution']['1']} ${token}**" , 
             image_url=players[winner]["default_nft"]["media"].replace("#","%23"))
         
         embed.add_field(name="POSITION", value="#######" , inline=True)
