@@ -249,7 +249,7 @@ async def arena_start(interaction: discord.Interaction):
 
         warning += 10
         if warning % 30 == 0:
-            await interaction.followup.send(embed=create_embed(description=f"## The bloodbath will starts in {countdown - warning} seconds..." , color=discord.Colour.yellow())) 
+            await interaction.followup.send(embed=create_embed(description=f"## The bloodbath will start in {countdown - warning} seconds..." , color=discord.Colour.yellow())) 
 
         #Fetch every user that reacted to the original message
         message = await interaction.channel.fetch_message(message.id)
@@ -360,7 +360,7 @@ async def run_arena(interaction: discord.Interaction, players : dict):
         #Reward players with custom token
         for player in topPlayers:
             amount = rewards["rewardDistribution"][player["position"]]
-            userManager.update_balance(amount , player["player_data"].id , token)
+            userManager.update_balance(player["player_data"].id , amount , token)
             userManager.update_user_wins(player["player_data"].id)
         
         for player in players:
