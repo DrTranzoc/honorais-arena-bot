@@ -232,7 +232,7 @@ async def arena_start(interaction: discord.Interaction):
                                                                         title="HONORAIS ROYALE",
                                                                         description="# HONORAIS! \n Fight and DIE for **honor!** Your anchestors awaits *you*!\n## REACT WITH ⚔️ TO JOIN!",
                                                                         color=discord.Colour.dark_green(),
-                                                                        image_url=GAME_SETTINGS["botBanner"],
+                                                                        image_url=GAME_SETTINGS["discordBotToken"],
                                                                         footer_text="Made my DrTranzoc @honorais\n"
                                                                     ))
     message = await interaction.original_response()
