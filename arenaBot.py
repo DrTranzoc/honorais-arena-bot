@@ -187,7 +187,7 @@ async def get_leaderboard(interaction: discord.Interaction):
     if len(leaderboard_raw) == 0:
         interaction.response.send_message(embed=create_embed("NO USERS IN THE LEADERBOARD"))
 
-    embed = create_embed(title="ROYALE LEADERBOARD",description=f"Rankings sorted by {mode.lower().replace('_',' ')}")
+    embed = create_embed(title="HONORAIS LEADERBOARD",description=f"HonOrais royale rankings, sorted by {mode.lower().replace('_',' ')}")
 
     rank = 1
 
@@ -196,15 +196,15 @@ async def get_leaderboard(interaction: discord.Interaction):
         user : discord.Member = interaction.guild.get_member(int(user_raw["discord_id"]))
         print(user)
 
-        embed.add_field(name="rank" , value=rank)
-        embed.add_field(name="user" , value=user.global_name if user else "...")
+        embed.add_field(name="rank" , value=rank, inline=True)
+        embed.add_field(name="user" , value=user.global_name if user else "...", inline=True)
 
         if mode == "HONOR":
-            embed.add_field(name="value" , value=user_raw["balances"].get("HONOR", 0))
+            embed.add_field(name="value" , value=user_raw["balances"].get("HONOR", 0), inline=True)
         elif mode == "WINS":
-            embed.add_field(name="value" , value=user_raw["games_data"]["games_won"])
+            embed.add_field(name="value" , value=user_raw["games_data"]["games_won"], inline=True)
         else:
-            embed.add_field(name="value" , value=user_raw["games_data"]["games_played"])
+            embed.add_field(name="value" , value=user_raw["games_data"]["games_played"], inline=True)
         
         rank += 1
 
