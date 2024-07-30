@@ -344,7 +344,7 @@ async def run_arena(interaction: discord.Interaction, players : dict):
             embed.add_field(name=f"-" , value=f"{player['player_data'].mention}" , inline=True)
             embed.add_field(name=f"-" , value=f"+{rewards['rewardDistribution'][player['position']]}" , inline=True)
         
-        embed.set_footer("Made my DrTranzoc | @honorais")
+        embed.set_footer(text="Made my DrTranzoc | @honorais")
 
         await interaction.followup.send(embed=embed)
 
