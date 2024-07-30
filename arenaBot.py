@@ -133,7 +133,7 @@ async def change_user_balance(interaction: discord.Interaction):
     except Exception:
         await interaction.response.send_message(embed=create_embed(description="An error occurred..." , color=discord.Colour.red()) , ephemeral=True)
 
-    response = userManager.change_balance(user.id , amount , token)
+    response = userManager.update_balance(user.id , amount , token)
     if response != -1:
         
         await interaction.response.send_message(embed=create_embed(
