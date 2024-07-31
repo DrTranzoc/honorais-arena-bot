@@ -191,7 +191,8 @@ async def get_leaderboard(interaction: discord.Interaction):
 
     rank = 1
 
-    embed.add_field(name="User" , value="#############", inline=True)
+    header_spaces = " ".join([x for x in range(25)])
+    embed.add_field(name="User" + header_spaces + "Amount" , value="###############", inline=True)
     for user_raw in leaderboard_raw:
         user : discord.Member = interaction.guild.get_member(int(user_raw["discord_id"]))
         
