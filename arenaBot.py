@@ -321,13 +321,15 @@ async def run_arena(interaction: discord.Interaction, players : dict):
             running_players.remove(player)
 
         #Battle recap
+        recap = recap.replace(". ",".\n\n")
+
         survivor_mentions = '\n'.join([player.mention for player in survivors])
         await interaction.followup.send(embed=create_embed(title="BATTLE RECAP\n\n" , 
                                                            description=recap + f"\n\n\n**ROUND SURVIVOR** \n{survivor_mentions} \n**{str(len(running_players))}** players remaining!",
                                                            thumbnail_url=players[survivors[0]]["default_nft"]["media"].replace("#","%23")
                                                            ))
         
-        await asyncio.sleep(8)  # Time between rounds
+        await asyncio.sleep(6)  # Time between rounds
 
     ### RESULT PHASE
     if len(running_players) == 1:
