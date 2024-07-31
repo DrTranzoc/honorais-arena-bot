@@ -328,11 +328,12 @@ async def run_arena(interaction: discord.Interaction, players : dict):
                                                            thumbnail_url=players[survivors[0]]["default_nft"]["media"].replace("#","%23")
                                                            ))
         
-        await asyncio.sleep(6)  # Time between rounds
+        if len(running_players) > 1:
+            await asyncio.sleep(6)  # Time between rounds
 
     ### RESULT PHASE
     if len(running_players) == 1:
-        await asyncio.sleep(5)
+        await asyncio.sleep(3)
         
         winner = running_players.pop()
         embed = create_embed(
