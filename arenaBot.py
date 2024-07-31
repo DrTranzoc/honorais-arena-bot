@@ -196,7 +196,7 @@ async def get_leaderboard(interaction: discord.Interaction):
     for user_raw in leaderboard_raw:
         user : discord.Member = interaction.guild.get_member(int(user_raw["discord_id"]))
         
-        user_value = f"{rank}) **{user.global_name if user else '...'}"
+        user_value = f"#{rank}) **{user.global_name if user else '...'}"
         value=str(user_raw["games_data"]["games_played"])
         if mode == "HONOR":
             value=str(user_raw["balances"].get("HONOR", 0))
@@ -205,7 +205,7 @@ async def get_leaderboard(interaction: discord.Interaction):
 
         spaces = " ".join(["" for _ in range(35 - len(user_value) - len(value))])
         
-        embed.add_field(name=f"{user_value}{spaces}{value}", inline=False)
+        embed.add_field(name=f"{user_value}{spaces}{value}", value = "\t", inline=False)
 
         rank += 1
 
