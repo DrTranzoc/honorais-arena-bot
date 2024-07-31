@@ -191,20 +191,20 @@ async def get_leaderboard(interaction: discord.Interaction):
 
     rank = 1
 
+    embed.add_field(name="User" , value="####", inline=True)
+    embed.add_field(name="User" , value="####", inline=True)
+    embed.add_field(name="\t" , value="\t", inline=True)
     for user_raw in leaderboard_raw:
-        print(user_raw["discord_id"])
         user : discord.Member = interaction.guild.get_member(int(user_raw["discord_id"]))
-        print(user)
 
-        embed.add_field(name="User" , value=f"{rank}) **{user.global_name}**" if user else "...", inline=True)
-
+        value=user_raw["games_data"]["games_played"]
         if mode == "HONOR":
-            embed.add_field(name="Amount" , value=user_raw["balances"].get("HONOR", 0), inline=True)
+            value=user_raw["balances"].get("HONOR", 0)
         elif mode == "WINS":
-            embed.add_field(name="Amount" , value=user_raw["games_data"]["games_won"], inline=True)
-        else:
-            embed.add_field(name="Amount" , value=user_raw["games_data"]["games_played"], inline=True)
-        
+            value=user_raw["games_data"]["games_won"]
+            
+        embed.add_field(name="User" , value=f"{rank}) **{user.global_name if user else "..."}**\t{value}", inline=False)
+
         rank += 1
 
     await interaction.response.send_message(embed=embed)
