@@ -203,7 +203,7 @@ async def get_leaderboard(interaction: discord.Interaction):
         elif mode == "WINS":
             value=user_raw["games_data"]["games_won"]
             
-        embed.add_field(name="User" , value=f"{rank}) **{user.global_name if user else "..."}**\t{value}", inline=False)
+        embed.add_field(name="User" , value=f"{rank}) **{user.global_name if user else '...'}**\t{value}", inline=False)
 
         rank += 1
 
