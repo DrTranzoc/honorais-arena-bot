@@ -192,7 +192,7 @@ async def get_leaderboard(interaction: discord.Interaction):
     rank = 1
 
     embed.add_field(name="User  -  #Amount" , value="###############", inline=False)
-    for user_raw in leaderboard_raw:
+    for user_raw in leaderboard_raw[:10]:
         user : discord.Member = interaction.guild.get_member(int(user_raw["discord_id"]))
         
         user_value = f"#{rank}) **{user.global_name if user else '...'}**"
