@@ -235,7 +235,7 @@ async def arena_start(interaction: discord.Interaction):
                                                                         color=discord.Colour.dark_green(),
                                                                         image_url=GAME_SETTINGS["botBanner"],
                                                                         footer_text="Made by DrTranzoc @honorais\n"
-                                                                    ))
+                                                                    ), allowed_mentions=discord.AllowedMentions(roles=True))
     message = await interaction.original_response()
     await message.add_reaction('⚔️')
 
@@ -333,12 +333,12 @@ async def run_arena(interaction: discord.Interaction, players : dict):
 
     ### RESULT PHASE
     if len(running_players) == 1:
-        await asyncio.sleep(3)
+        await asyncio.sleep(1)
         
         winner = running_players.pop()
         embed = create_embed(
             title=f"WINNER! {winner.global_name}" , 
-            description=f"Congratulations, {winner.mention}, you are earned **{rewards['rewardDistribution']['1']} ${token}**" , 
+            description=f"Congratulations, {winner.mention}, you earned **{rewards['rewardDistribution']['1']} ${token}**" , 
             image_url=players[winner]["default_nft"]["media"].replace("#","%23"))
         
         embed.add_field(name="POSITION", value="#######" , inline=True)
@@ -352,7 +352,7 @@ async def run_arena(interaction: discord.Interaction, players : dict):
         
         embed.set_footer(text="Made by DrTranzoc | @honorais")
 
-        await interaction.followup.send(embed=embed)
+        await interaction.followup.send(embed=embed,  allowed_mentions=discord.AllowedMentions(roles=True))
 
         topPlayers.insert(0, {
                     "position" : "1",
